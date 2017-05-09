@@ -1,0 +1,13 @@
+.header_top {
+  display: flex;
+  line-height: 8vh;
+  justify-content:space-around;
+  border-bottom:1px solid #f3f3f3;
+}
+
+.header_bottom {
+  display: flex;
+  line-height: 8vh;
+  padding-bottom: 2vh;
+  justify-content:space-around;
+}
