@@ -7,10 +7,9 @@ class Header extends React.Component{
     return(
       <div className='wrap'>
         <div className='header_top' >
+          <Link to='/' className='header_logo'></Link>
           <div>
-            <Link to='/'>Home</Link>
-          </div>
-          <div>
+            <div></div>
             <input className='header_search'/>
           </div>
           <div>
@@ -19,14 +18,17 @@ class Header extends React.Component{
           </div>
         </div>
         <div className='header_bottom'>
-          <div className='kid'>
+          <div className='unforgettable'>我的一生只有你！</div>
+          <div className='nav'>
+          <div className='header_nav'>
             <Link to='/'>收养Kid</Link>
           </div>
-          <div className='kid'>
+          <div className='header_nav'>
             <Link to='/'>寻找Kid</Link>
           </div>
-          <div className='kid'>
+          <div className='header_nav'>
             <Link to='/'>谈论Kid</Link>
+          </div>
           </div>
         </div>
       </div>
