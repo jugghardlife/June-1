@@ -12,13 +12,13 @@ class Header extends React.Component{
             <div></div>
             <input className='header_search'/>
           </div>
-          <div>
-            <Link to='/login'>Login</Link>
-            <Link to='/signup'>Signup</Link>
+          <div className='waha'>
+            <Link to='/login' className='login'>Login</Link>
+            <Link to='/signup' className='signup'>Signup</Link>
           </div>
         </div>
         <div className='header_bottom'>
-          <div className='unforgettable'>我的一生只有你！</div>
+          <Link to='/' className='unforgettable'>我的一生只有你！</Link>
           <div className='nav'>
           <div className='header_nav'>
             <Link to='/'>收养Kid</Link>
@@ -27,7 +27,7 @@ class Header extends React.Component{
             <Link to='/'>寻找Kid</Link>
           </div>
           <div className='header_nav'>
-            <Link to='/'>谈论Kid</Link>
+            <Link to='/'>关爱Kid</Link>
           </div>
           </div>
         </div>

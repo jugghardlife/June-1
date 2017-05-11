@@ -2,17 +2,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-const KidSchema = new Schema(
+const DogSchema = new Schema(
   {
-    category: { type: String,unique: true,required: true },
-    narration: { type: String },
+    name: { type: String},
+    age: { type: String },
+    gender:{type:String},
     picture: { type: String ,required: true},
-    dogs: [{
+    kid: {
       type: ObjectId,
-      ref: 'Dog'
-    }]
+      ref: 'Kid'
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Kid', KidSchema);
+module.exports = mongoose.model('Dog', DogSchema);

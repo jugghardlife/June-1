@@ -21847,17 +21847,21 @@
 
 	var _Kid2 = _interopRequireDefault(_Kid);
 
-	var _Login = __webpack_require__(285);
+	var _Login = __webpack_require__(287);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Signup = __webpack_require__(286);
+	var _Signup = __webpack_require__(290);
 
 	var _Signup2 = _interopRequireDefault(_Signup);
 
-	var _NewKid = __webpack_require__(287);
+	var _NewKid = __webpack_require__(291);
 
 	var _NewKid2 = _interopRequireDefault(_NewKid);
+
+	var _NewDog = __webpack_require__(292);
+
+	var _NewDog2 = _interopRequireDefault(_NewDog);
 
 	var _reactRouter = __webpack_require__(184);
 
@@ -21891,10 +21895,11 @@
 	            _reactRouter.Route,
 	            { path: '/', component: _App2.default },
 	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	            _react2.default.createElement(_reactRouter.Route, { path: '/kid', component: _Kid2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/kid/:_id', component: _Kid2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _Login2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: '/signup', component: _Signup2.default }),
-	            _react2.default.createElement(_reactRouter.Route, { path: '/newkid', component: _NewKid2.default })
+	            _react2.default.createElement(_reactRouter.Route, { path: '/newkid', component: _NewKid2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/newdog', component: _NewDog2.default })
 	          )
 	        )
 	      );
@@ -28099,15 +28104,15 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            null,
+	            { className: 'waha' },
 	            _react2.default.createElement(
 	              _reactRouter.Link,
-	              { to: '/login' },
+	              { to: '/login', className: 'login' },
 	              'Login'
 	            ),
 	            _react2.default.createElement(
 	              _reactRouter.Link,
-	              { to: '/signup' },
+	              { to: '/signup', className: 'signup' },
 	              'Signup'
 	            )
 	          )
@@ -28116,8 +28121,8 @@
 	          'div',
 	          { className: 'header_bottom' },
 	          _react2.default.createElement(
-	            'div',
-	            { className: 'unforgettable' },
+	            _reactRouter.Link,
+	            { to: '/', className: 'unforgettable' },
 	            '\u6211\u7684\u4E00\u751F\u53EA\u6709\u4F60\uFF01'
 	          ),
 	          _react2.default.createElement(
@@ -28147,7 +28152,7 @@
 	              _react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/' },
-	                '\u8C08\u8BBAKid'
+	                '\u5173\u7231Kid'
 	              )
 	            )
 	          )
@@ -28201,7 +28206,7 @@
 
 
 	// module
-	exports.push([module.id, ".header_top {\n  display: flex;\n  line-height: 12vh;\n  justify-content:space-around;\n  border-bottom:1px solid #f3f3f3;\n}\n\n.header_logo {\n  margin-top: 3vh;\n  width: 3vw;\n  height: 3vw;\n  background-image: url(" + __webpack_require__(247) + ");\n  background-position: center;\n  background-size: cover;\n}\n\n.header_search {\n  height: 4vh;\n  width: 40vw;\n  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;\n  outline: none;\n}\n\n.header_bottom {\n  display: flex;\n  line-height: 8vh;\n  justify-content:space-around;\n}\n\n.unforgettable {\n  font-size: 1.3rem;\n}\n\n.nav {\n  display: flex;\n  justify-content:space-around;\n  flex-grow:1;\n}\n\n.header_nav a {\n  width: 100%;\n  height: 100%;\n  color: #605959;\n  text-decoration: none;\n}\n", ""]);
+	exports.push([module.id, ".header_top {\n  display: flex;\n  line-height: 12vh;\n  justify-content:space-around;\n  border-bottom:1px solid #f3f3f3;\n}\n\n.header_logo {\n  margin-top: 3vh;\n  width: 3vw;\n  height: 3vw;\n  background-image: url(" + __webpack_require__(247) + ");\n  background-position: center;\n  background-size: cover;\n}\n\n.header_search {\n  height: 4vh;\n  width: 40vw;\n  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;\n  outline: none;\n}\n\n.waha {\n  display: flex;\n}\n\n.login {\n  display: block;\n  color: #605959;\n  text-decoration: none;\n  font-size: 0.8rem;\n  margin: 0.5rem 0.2rem 0 0.2rem;\n}\n\n.signup {\n  display: block;\n  color: #605959;\n  text-decoration: none;\n  font-size: 0.8rem;\n  margin: 0.5rem 0.3rem 0 0.3rem;\n}\n\n.header_bottom {\n  display: flex;\n  line-height: 8vh;\n  justify-content:space-around;\n}\n\n.unforgettable {\n  font-size: 1.3rem;\n  color: #000;\n  text-decoration: none;\n}\n\n.nav {\n  display: flex;\n  justify-content:space-around;\n  flex-grow:1;\n}\n\n.header_nav a {\n  width: 100%;\n  height: 100%;\n  color: #605959;\n  text-decoration: none;\n}\n", ""]);
 
 	// exports
 
@@ -28808,8 +28813,12 @@
 	        return _react2.default.createElement(
 	          'div',
 	          { key: i, className: 'kid' },
-	          _react2.default.createElement('img', { src: 'http://localhost:4000/' + kid.picture, className: 'kid_img' }),
-	          _react2.default.createElement('div', { className: 'kid_bg' })
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/kid/' + kid._id },
+	            _react2.default.createElement('img', { src: 'http://localhost:4000/' + kid.picture, className: 'kid_img' }),
+	            _react2.default.createElement('div', { className: 'kid_bg' })
+	          )
 	        );
 	      });
 	      return _react2.default.createElement(
@@ -32292,6 +32301,12 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _axios = __webpack_require__(253);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	__webpack_require__(285);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32306,16 +32321,52 @@
 	  function Kid() {
 	    _classCallCheck(this, Kid);
 
-	    return _possibleConstructorReturn(this, (Kid.__proto__ || Object.getPrototypeOf(Kid)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Kid.__proto__ || Object.getPrototypeOf(Kid)).call(this));
+
+	    _this.state = {
+	      Variety: '',
+	      narration: '',
+	      picture: ''
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Kid, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      console.log(this.props.params._id);
+	      _axios2.default.get('http://localhost:4000/kids/' + this.props.params._id).then(function (res) {
+	        _this2.setState({
+	          Variety: res.data.kid.Variety,
+	          narration: res.data.kid.narration,
+	          picture: 'http://localhost:4000/' + res.data.kid.picture
+	        });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.state);
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        'Kid'
+	        { className: 'kid_wrap' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          this.state.Variety
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          this.state.narration
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'kid_img_wrap' },
+	          _react2.default.createElement('img', { src: this.state.picture, className: 'kid_img' })
+	        )
 	      );
 	    }
 	  }]);
@@ -32329,6 +32380,51 @@
 /* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(286);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(248)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./kid.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./kid.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(246)(undefined);
+	// imports
+
+
+	// module
+	exports.push([module.id, ".kid_wrap {\n  width: 70vw;\n  margin: 0 auto;\n}\n\n.kid_img_wrap {\n  width: 38vw;\n  height: 55vh;\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -32340,6 +32436,8 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	__webpack_require__(288);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32359,12 +32457,50 @@
 	  }
 
 	  _createClass(Login, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      event.preventDefault();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        'Login'
+	        { className: 'login_wrap' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          '\u4E3B\u4EBA\uFF0C\u6C38\u8FDC\u662F100\u5206'
+	        ),
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit.bind(this), className: 'login_form' },
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '\u7528\u6237\u540D'
+	            ),
+	            _react2.default.createElement('input', null)
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'span',
+	              null,
+	              '\u5BC6\u7801'
+	            ),
+	            _react2.default.createElement('input', { type: 'password' })
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement('input', { type: 'submit', value: '\u767B\u9646' })
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -32375,7 +32511,52 @@
 	exports.default = Login;
 
 /***/ }),
-/* 286 */
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(289);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// Prepare cssTransformation
+	var transform;
+
+	var options = {}
+	options.transform = transform
+	// add the styles to the DOM
+	var update = __webpack_require__(248)(content, options);
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./login.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./login.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(246)(undefined);
+	// imports
+
+
+	// module
+	exports.push([module.id, ".login_wrap {\n  width: 70vw;\n  margin: 0 auto;\n}\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32424,7 +32605,7 @@
 	exports.default = Signup;
 
 /***/ }),
-/* 287 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32471,12 +32652,12 @@
 	      event.preventDefault();
 	      var API_URL = 'http://localhost:4000';
 	      var formData = new FormData();
-	      var category = this.refs.category.value.trim();
+	      var Variety = this.refs.Variety.value.trim();
 	      var narration = this.refs.narration.value.trim();
 	      var picture = this.state.file;
 	      console.log(this.state.file);
 
-	      formData.append('category', category);
+	      formData.append('Variety', Variety);
 	      formData.append('narration', narration);
 	      formData.append('picture', picture);
 	      console.log("hello", picture);
@@ -32519,8 +32700,8 @@
 	        null,
 	        _react2.default.createElement(
 	          'form',
-	          { onSubmit: this.handleSubmit.bind(this), className: 'form' },
-	          _react2.default.createElement('input', { type: 'text', ref: 'category' }),
+	          { onSubmit: this.handleSubmit.bind(this), className: 'newkid_form' },
+	          _react2.default.createElement('input', { type: 'text', ref: 'Variety' }),
 	          _react2.default.createElement('input', { type: 'text', ref: 'narration' }),
 	          _react2.default.createElement('input', { type: 'file', onChange: this.handleChange.bind(this) }),
 	          this.state.image !== '' ? _react2.default.createElement('img', { src: this.state.image }) : '',
@@ -32542,6 +32723,55 @@
 	}(_react2.default.Component);
 
 	exports.default = NewKid;
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Dog = function (_React$Component) {
+	  _inherits(Dog, _React$Component);
+
+	  function Dog() {
+	    _classCallCheck(this, Dog);
+
+	    return _possibleConstructorReturn(this, (Dog.__proto__ || Object.getPrototypeOf(Dog)).apply(this, arguments));
+	  }
+
+	  _createClass(Dog, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Dog'
+	      );
+	    }
+	  }]);
+
+	  return Dog;
+	}(_react2.default.Component);
+
+	exports.default = Dog;
 
 /***/ })
 /******/ ]);

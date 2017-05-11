@@ -21,8 +21,10 @@ class Home extends React.Component{
     let kid = this.state.kid.map((kid,i)=>{
       return (
         <div key={i} className='kid'>
-          <img src={`http://localhost:4000/${kid.picture}`} className='kid_img'/>
-          <div className='kid_bg'></div>
+          <Link to={`/kid/${kid._id}`}>
+            <img src={`http://localhost:4000/${kid.picture}`} className='kid_img'/>
+            <div className='kid_bg'></div>
+          </Link>
         </div>
       )
     })

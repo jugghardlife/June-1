@@ -21,6 +21,26 @@
   outline: none;
 }
 
+.waha {
+  display: flex;
+}
+
+.login {
+  display: block;
+  color: #605959;
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin: 0.5rem 0.2rem 0 0.2rem;
+}
+
+.signup {
+  display: block;
+  color: #605959;
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin: 0.5rem 0.3rem 0 0.3rem;
+}
+
 .header_bottom {
   display: flex;
   line-height: 8vh;
@@ -29,6 +49,8 @@
 
 .unforgettable {
   font-size: 1.3rem;
+  color: #000;
+  text-decoration: none;
 }
 
 .nav {
