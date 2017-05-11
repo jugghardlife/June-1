@@ -32324,7 +32324,7 @@
 	    var _this = _possibleConstructorReturn(this, (Kid.__proto__ || Object.getPrototypeOf(Kid)).call(this));
 
 	    _this.state = {
-	      Variety: '',
+	      variety: '',
 	      narration: '',
 	      picture: ''
 	    };
@@ -32339,7 +32339,7 @@
 	      console.log(this.props.params._id);
 	      _axios2.default.get('http://localhost:4000/kids/' + this.props.params._id).then(function (res) {
 	        _this2.setState({
-	          Variety: res.data.kid.Variety,
+	          variety: res.data.kid.variety,
 	          narration: res.data.kid.narration,
 	          picture: 'http://localhost:4000/' + res.data.kid.picture
 	        });
@@ -32355,7 +32355,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          this.state.Variety
+	          this.state.variety
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -32652,12 +32652,12 @@
 	      event.preventDefault();
 	      var API_URL = 'http://localhost:4000';
 	      var formData = new FormData();
-	      var Variety = this.refs.Variety.value.trim();
+	      var variety = this.refs.variety.value.trim();
 	      var narration = this.refs.narration.value.trim();
 	      var picture = this.state.file;
 	      console.log(this.state.file);
 
-	      formData.append('Variety', Variety);
+	      formData.append('variety', variety);
 	      formData.append('narration', narration);
 	      formData.append('picture', picture);
 	      console.log("hello", picture);
@@ -32701,7 +32701,7 @@
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: this.handleSubmit.bind(this), className: 'newkid_form' },
-	          _react2.default.createElement('input', { type: 'text', ref: 'Variety' }),
+	          _react2.default.createElement('input', { type: 'text', ref: 'variety' }),
 	          _react2.default.createElement('input', { type: 'text', ref: 'narration' }),
 	          _react2.default.createElement('input', { type: 'file', onChange: this.handleChange.bind(this) }),
 	          this.state.image !== '' ? _react2.default.createElement('img', { src: this.state.image }) : '',

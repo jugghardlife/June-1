@@ -12,12 +12,12 @@ class NewKid extends React.Component{
     event.preventDefault()
     let API_URL = 'http://localhost:4000';
     let formData = new FormData()
-    let Variety = this.refs.Variety.value.trim()
+    let variety = this.refs.variety.value.trim()
     let narration = this.refs.narration.value.trim()
     let picture = this.state.file
     console.log(this.state.file)
 
-    formData.append('Variety', Variety)
+    formData.append('variety', variety)
     formData.append('narration', narration)
     formData.append('picture', picture)
     console.log("hello",picture )
@@ -53,7 +53,7 @@ class NewKid extends React.Component{
     return(
       <div>
         <form onSubmit={this.handleSubmit.bind(this)} className='newkid_form'>
-          <input type = 'text' ref='Variety'/>
+          <input type = 'text' ref='variety'/>
           <input type = 'text' ref='narration'/>
           <input type='file' onChange={this.handleChange.bind(this)}/>
           { this.state.image !== '' ? <img src={this.state.image} /> : ''}

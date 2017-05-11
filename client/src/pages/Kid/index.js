@@ -6,7 +6,7 @@ class Kid extends React.Component{
   constructor(){
     super()
     this.state={
-      Variety:'',
+      variety:'',
       narration:'',
       picture:''
     }
@@ -15,7 +15,7 @@ class Kid extends React.Component{
     console.log(this.props.params._id);
     axios.get(`http://localhost:4000/kids/${this.props.params._id}`)
     .then(res=>{this.setState({
-      Variety:res.data.kid.Variety,
+      variety:res.data.kid.variety,
       narration:res.data.kid.narration,
       picture:`http://localhost:4000/${res.data.kid.picture}`
     })
@@ -25,7 +25,7 @@ class Kid extends React.Component{
     console.log(this.state)
     return(
       <div className='kid_wrap'>
-        <div>{this.state.Variety}</div>
+        <div>{this.state.variety}</div>
         <div>{this.state.narration}</div>
         <div className='kid_img_wrap'>
           <img src={this.state.picture} className='kid_img'/>
