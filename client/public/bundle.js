@@ -32740,6 +32740,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _axios = __webpack_require__(253);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32754,16 +32758,92 @@
 	  function Dog() {
 	    _classCallCheck(this, Dog);
 
-	    return _possibleConstructorReturn(this, (Dog.__proto__ || Object.getPrototypeOf(Dog)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (Dog.__proto__ || Object.getPrototypeOf(Dog)).call(this));
+
+	    _this.state = {
+	      image: ''
+	    };
+	    return _this;
 	  }
 
 	  _createClass(Dog, [{
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      event.preventDefault();
+	      var API_URL = 'http://localhost:4000';
+	      var formData = new FormData();
+	      var name = this.refs.name.value.trim();
+	      var age = this.refs.age.value.trim();
+	      var gender = this.refs.gender.value.trim();
+	      var kid = this.refs.kid.value.trim();
+	      var picture = this.state.file;
+	      console.log(this.state.file);
+	      console.log(name);
+	      console.log(age);
+	      console.log(gender);
+
+	      formData.append('name', name);
+	      formData.append('age', age);
+	      formData.append('gender', gender);
+	      formData.append('kid', kid);
+	      formData.append('picture', picture);
+	      console.log("hello", picture);
+
+	      _axios2.default.post(API_URL + '/dogs/newdog', formData).then(function (res) {
+	        console.log(res);
+	        alert(res.data.message);
+	        if (res.data.error !== undefined) alert(res.data.error);
+	        // browserHistory.push('/')
+	      }).catch(function (error) {
+	        console.log(error);
+	      });
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      var _this2 = this;
+
+	      var file = event.target.files[0];
+	      console.log(file);
+	      if (!file.type.match('image.*')) {
+	        alert('请上传图片');
+	      } else {
+	        var reader = new FileReader();
+	        reader.onload = function (event) {
+	          _this2.setState({
+	            image: event.target.result,
+	            file: file
+	          });
+	        };
+
+	        reader.readAsDataURL(file);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'Dog'
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit.bind(this), className: 'newdog_form' },
+	          _react2.default.createElement('input', { type: 'text', ref: 'name' }),
+	          _react2.default.createElement('input', { type: 'text', ref: 'age' }),
+	          _react2.default.createElement('input', { type: 'text', ref: 'gender' }),
+	          _react2.default.createElement('input', { type: 'text', ref: 'kid' }),
+	          _react2.default.createElement('input', { type: 'file', onChange: this.handleChange.bind(this) }),
+	          this.state.image !== '' ? _react2.default.createElement('img', { src: this.state.image }) : '',
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'action' },
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'submit', className: 'button' },
+	              '\u4FDD\u5B58'
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);

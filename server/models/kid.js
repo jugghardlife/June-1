@@ -4,8 +4,8 @@ const ObjectId = Schema.Types.ObjectId;
 
 const KidSchema = new Schema(
   {
-    category: { type: String,unique: true,required: true },
-    variety: { type: String },
+    variety: { type: String,unique: true,required: true },
+    narration: { type: String },
     picture: { type: String ,required: true},
     dogs: [{
       type: ObjectId,

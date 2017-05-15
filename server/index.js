@@ -3,12 +3,19 @@ const app = express();
 const mongoose = require('mongoose');
 const Kid = require('./models/kid');
 const Dog = require('./models/dog');
+const User = require('./models/user');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const multer = require('multer');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 const upload = multer({dest: './public'});
 
+let generateToken = function(user) {
+  return jwt.sign(user,'kid', {
+    expiresIn: 86400
+  });
+}
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -68,7 +75,8 @@ app.post('/kids/remove/:id',function(req,res){
 
 //dog api
 
-app.post('/dogs/newdog',function(req,res){
+app.post('/dogs/newdog',upload.single('picture'),function(req,res){
+  console.log(req.body)
   let dogObj = req.body;
   let kidId = req.body.kid;
   console.log(kidId);
@@ -81,13 +89,17 @@ app.post('/dogs/newdog',function(req,res){
       })
     }else {
       var dog = new Dog(dogObj);
+      if(req.file && req.file.filename) {
+        dog.picture = req.file.filename;
+      }
+      console.log(dog)
       dog.save(function (err, newdog) {
         if (err) return res.status(500).json({msg: '新增商品失败', err});
         kid.dogs.push(newdog._id);
         kid.save(function (err) {
         if (err) return res.status(500).json({msg: '分类添加商品失败',err});
         res.json({
-          msg: '新增商品成功',
+          message: '新增商品成功',
           dog: newdog
         })
       })
@@ -102,6 +114,42 @@ app.get('/dogs/:id',function(req,res){
     if(err) return console.log(err);
     res.json({dog})
   })
+})
+
+//user api
+
+app.post('/signup',function(req,res){
+  console.log(req.body)
+  let user = new User();
+  user.email = req.body.email;
+  user.password = req.body.password;
+  user.save(function(err) {
+    if(err) { return console.log(err); }
+    return res.json({
+      token: generateToken({_id: user._id, email: user.email}),
+    })
+  })
+})
+
+app.post('/login',function(req,res){
+  console.log(req.body),
+  User.findOne({ email: req.body.email }, function(err, user) {
+    if(err) { return console.log(err); }
+    if(!user) { return res.status(403).json({error: '用户不存在！'}) }
+    user.comparePassword(req.body.password, function(err, isMatch) {
+      if(err) { return console.log(err); }
+      if (!isMatch) { return res.status(403).json({error: "密码无效！" }); }
+      if(user.admin === true) {
+        return res.json({
+          token: generateToken({_id: user._id, email: user.email, admin: user.admin})
+        });
+      } else {
+        return res.json({
+          token: generateToken({_id: user._id, email: user.email})
+        });
+      }
+    });
+  });
 })
 
 app.listen(4000,function () {

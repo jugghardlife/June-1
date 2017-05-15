@@ -23,14 +23,14 @@ class NewKid extends React.Component{
     console.log("hello",picture )
 
     axios.post(`${API_URL}/kids`, formData)
-      .then(res => {
-        console.log(res)
-        alert(res.data.message)
-        if(res.data.error !== undefined) alert(res.data.error)
-        // browserHistory.push('/')
-      }).catch(error =>{
-        console.log(error)
-      })
+    .then(res => {
+      console.log(res)
+      alert(res.data.message)
+      if(res.data.error !== undefined) alert(res.data.error)
+      // browserHistory.push('/')
+    }).catch(error =>{
+      console.log(error)
+    })
   }
   handleChange(event){
     const file = event.target.files[0]
@@ -58,8 +58,8 @@ class NewKid extends React.Component{
           <input type='file' onChange={this.handleChange.bind(this)}/>
           { this.state.image !== '' ? <img src={this.state.image} /> : ''}
           <div className='action'>
-              <button type='submit' className='button'>保存</button>
-            </div>
+            <button type='submit' className='button'>保存</button>
+          </div>
         </form>
       </div>
     )
