@@ -145,7 +145,8 @@ app.post('/login',function(req,res){
         });
       } else {
         return res.json({
-          token: generateToken({_id: user._id, email: user.email})
+          token: generateToken({_id: user._id, email: user.email}),
+          user:user.email
         });
       }
     });
