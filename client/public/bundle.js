@@ -4034,6 +4034,14 @@
 	      return emptyFunction.thatReturnsNull;
 	    }
 
+	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+	      var checker = arrayOfTypeCheckers[i];
+	      if (typeof checker !== 'function') {
+	        warning(false, 'Invalid argument supplid to oneOfType. Expected an array of check functions, but ' + 'received %s at index %s.', getPostfixForTypeWarning(checker), i);
+	        return emptyFunction.thatReturnsNull;
+	      }
+	    }
+
 	    function validate(props, propName, componentName, location, propFullName) {
 	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	        var checker = arrayOfTypeCheckers[i];
@@ -4166,6 +4174,9 @@
 	  // This handles more types than `getPropType`. Only used for error messages.
 	  // See `createPrimitiveTypeChecker`.
 	  function getPreciseType(propValue) {
+	    if (typeof propValue === 'undefined' || propValue === null) {
+	      return '' + propValue;
+	    }
 	    var propType = getPropType(propValue);
 	    if (propType === 'object') {
 	      if (propValue instanceof Date) {
@@ -4175,6 +4186,23 @@
 	      }
 	    }
 	    return propType;
+	  }
+
+	  // Returns a string that is postfixed to a warning about an invalid type.
+	  // For example, "undefined" or "of type array"
+	  function getPostfixForTypeWarning(value) {
+	    var type = getPreciseType(value);
+	    switch (type) {
+	      case 'array':
+	      case 'object':
+	        return 'an ' + type;
+	      case 'boolean':
+	      case 'date':
+	      case 'regexp':
+	        return 'a ' + type;
+	      default:
+	        return type;
+	    }
 	  }
 
 	  // Returns class name of the object, if any.
@@ -21851,15 +21879,15 @@
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Signup = __webpack_require__(332);
+	var _Signup = __webpack_require__(335);
 
 	var _Signup2 = _interopRequireDefault(_Signup);
 
-	var _NewKid = __webpack_require__(333);
+	var _NewKid = __webpack_require__(336);
 
 	var _NewKid2 = _interopRequireDefault(_NewKid);
 
-	var _NewDog = __webpack_require__(334);
+	var _NewDog = __webpack_require__(337);
 
 	var _NewDog2 = _interopRequireDefault(_NewDog);
 
@@ -22300,17 +22328,22 @@
 
 	var emptyFunction = __webpack_require__(12);
 	var invariant = __webpack_require__(8);
+	var ReactPropTypesSecret = __webpack_require__(32);
 
 	module.exports = function () {
-	  // Important!
-	  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
-	  function shim() {
+	  function shim(props, propName, componentName, location, propFullName, secret) {
+	    if (secret === ReactPropTypesSecret) {
+	      // It is still safe when called from React.
+	      return;
+	    }
 	    invariant(false, 'Calling PropTypes validators directly is not supported by the `prop-types` package. ' + 'Use PropTypes.checkPropTypes() to call them. ' + 'Read more at http://fb.me/use-check-prop-types');
 	  };
 	  shim.isRequired = shim;
 	  function getShim() {
 	    return shim;
 	  };
+	  // Important!
+	  // Keep this list in sync with production version in `./factoryWithTypeCheckers.js`.
 	  var ReactPropTypes = {
 	    array: shim,
 	    bool: shim,
@@ -28083,6 +28116,8 @@
 
 	var _reactRedux = __webpack_require__(270);
 
+	var _accountActions = __webpack_require__(331);
+
 	__webpack_require__(285);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28103,6 +28138,11 @@
 	  }
 
 	  _createClass(Header, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.props.fetchUser();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var currentUser = _store2.default.getState().account.currentUser;
@@ -28132,7 +28172,7 @@
 	              { to: '/signup', className: 'signup' },
 	              'Signup'
 	            ),
-	            this.props.currentUser.email
+	            this.props.user
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -28184,11 +28224,11 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    currentUser: state.account.currentUser
+	    user: state.account.userName
 	  };
 	};
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(Header);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchUser: _accountActions.fetchUser })(Header);
 
 /***/ }),
 /* 244 */
@@ -28213,7 +28253,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var account = {
-	  currentUser: {}
+	  userName: ''
 	};
 
 	var kid = {};
@@ -29340,7 +29380,11 @@
 	  switch (action.type) {
 	    case 'login':
 	      return {
-	        currentUser: action.user
+	        userName: action.user
+	      };
+	    case 'LOAD_USER':
+	      return {
+	        userName: action.user
 	      };
 	    default:
 	      return state;
@@ -34916,7 +34960,7 @@
 	      };
 	      console.log(_user);
 	      this.props.login(_user);
-	      _reactRouter.browserHistory.push('/');
+	      // browserHistory.push(`/`)
 	    }
 	  }, {
 	    key: 'render',
@@ -35026,12 +35070,13 @@
 	  value: true
 	});
 	exports.login = login;
+	exports.fetchUser = fetchUser;
 
 	var _axios = __webpack_require__(294);
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _jwtDecode = __webpack_require__(335);
+	var _jwtDecode = __webpack_require__(332);
 
 	var _jwtDecode2 = _interopRequireDefault(_jwtDecode);
 
@@ -35039,20 +35084,151 @@
 
 	function login(user) {
 	  return function (dispatch) {
-	    _axios2.default.post('http://localhost:4000/login', user).then(function (res) {
+	    _axios2.default.post('http://localhost:4000/login/', user).then(function (res) {
 	      console.log('login', res);
 	      var token = res.data.token;
 	      sessionStorage.setItem('jwtToken', token);
-	      console.log((0, _jwtDecode2.default)(token));
-	      dispatch({ type: 'login', user: (0, _jwtDecode2.default)(token) });
-	    }).catch(function (err) {
-	      return console.log(err);
+	      console.log('jwtDecode', (0, _jwtDecode2.default)(token));
+	      dispatch({ type: 'login', user: (0, _jwtDecode2.default)(token).email });
+	    }).catch(function (error) {
+	      return console.log(error);
 	    });
+	  };
+	}
+
+	function fetchUser() {
+	  return function (dispatch) {
+	    if (sessionStorage.getItem("jwtToken")) {
+	      var userId = (0, _jwtDecode2.default)(sessionStorage.getItem("jwtToken"))._id;
+	      console.log("id", userId);
+	      if (userId) {
+	        console.log(userId);
+	        _axios2.default.get('http://localhost:4000/user/' + userId).then(function (res) {
+	          dispatch({ type: 'LOAD_USER', user: res.data.user });
+	        }).catch(function (err) {
+	          return console.log(err);
+	        });
+	      }
+	    }
 	  };
 	}
 
 /***/ }),
 /* 332 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var base64_url_decode = __webpack_require__(333);
+
+	function InvalidTokenError(message) {
+	  this.message = message;
+	}
+
+	InvalidTokenError.prototype = new Error();
+	InvalidTokenError.prototype.name = 'InvalidTokenError';
+
+	module.exports = function (token, options) {
+	  if (typeof token !== 'string') {
+	    throw new InvalidTokenError('Invalid token specified');
+	  }
+
+	  options = options || {};
+	  var pos = options.header === true ? 0 : 1;
+	  try {
+	    return JSON.parse(base64_url_decode(token.split('.')[pos]));
+	  } catch (e) {
+	    throw new InvalidTokenError('Invalid token specified: ' + e.message);
+	  }
+	};
+
+	module.exports.InvalidTokenError = InvalidTokenError;
+
+/***/ }),
+/* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var atob = __webpack_require__(334);
+
+	function b64DecodeUnicode(str) {
+	  return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
+	    var code = p.charCodeAt(0).toString(16).toUpperCase();
+	    if (code.length < 2) {
+	      code = '0' + code;
+	    }
+	    return '%' + code;
+	  }));
+	}
+
+	module.exports = function (str) {
+	  var output = str.replace(/-/g, "+").replace(/_/g, "/");
+	  switch (output.length % 4) {
+	    case 0:
+	      break;
+	    case 2:
+	      output += "==";
+	      break;
+	    case 3:
+	      output += "=";
+	      break;
+	    default:
+	      throw "Illegal base64url string!";
+	  }
+
+	  try {
+	    return b64DecodeUnicode(output);
+	  } catch (err) {
+	    return atob(output);
+	  }
+	};
+
+/***/ }),
+/* 334 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * The code was extracted from:
+	 * https://github.com/davidchambers/Base64.js
+	 */
+
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+	function InvalidCharacterError(message) {
+	  this.message = message;
+	}
+
+	InvalidCharacterError.prototype = new Error();
+	InvalidCharacterError.prototype.name = 'InvalidCharacterError';
+
+	function polyfill(input) {
+	  var str = String(input).replace(/=+$/, '');
+	  if (str.length % 4 == 1) {
+	    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
+	  }
+	  for (
+	  // initialize result and counters
+	  var bc = 0, bs, buffer, idx = 0, output = '';
+	  // get next character
+	  buffer = str.charAt(idx++);
+	  // character found in table? initialize bit storage and add its ascii value;
+	  ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+	  // and if not first of each 4 characters,
+	  // convert the first 8 bits to one ascii character
+	  bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+	    // try to find character in table (0-63, not found => -1)
+	    buffer = chars.indexOf(buffer);
+	  }
+	  return output;
+	}
+
+	module.exports = typeof window !== 'undefined' && window.atob && window.atob.bind(window) || polyfill;
+
+/***/ }),
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35101,7 +35277,7 @@
 	exports.default = Signup;
 
 /***/ }),
-/* 333 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35221,7 +35397,7 @@
 	exports.default = NewKid;
 
 /***/ }),
-/* 334 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35348,120 +35524,6 @@
 	}(_react2.default.Component);
 
 	exports.default = Dog;
-
-/***/ }),
-/* 335 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var base64_url_decode = __webpack_require__(336);
-
-	function InvalidTokenError(message) {
-	  this.message = message;
-	}
-
-	InvalidTokenError.prototype = new Error();
-	InvalidTokenError.prototype.name = 'InvalidTokenError';
-
-	module.exports = function (token, options) {
-	  if (typeof token !== 'string') {
-	    throw new InvalidTokenError('Invalid token specified');
-	  }
-
-	  options = options || {};
-	  var pos = options.header === true ? 0 : 1;
-	  try {
-	    return JSON.parse(base64_url_decode(token.split('.')[pos]));
-	  } catch (e) {
-	    throw new InvalidTokenError('Invalid token specified: ' + e.message);
-	  }
-	};
-
-	module.exports.InvalidTokenError = InvalidTokenError;
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var atob = __webpack_require__(337);
-
-	function b64DecodeUnicode(str) {
-	  return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
-	    var code = p.charCodeAt(0).toString(16).toUpperCase();
-	    if (code.length < 2) {
-	      code = '0' + code;
-	    }
-	    return '%' + code;
-	  }));
-	}
-
-	module.exports = function (str) {
-	  var output = str.replace(/-/g, "+").replace(/_/g, "/");
-	  switch (output.length % 4) {
-	    case 0:
-	      break;
-	    case 2:
-	      output += "==";
-	      break;
-	    case 3:
-	      output += "=";
-	      break;
-	    default:
-	      throw "Illegal base64url string!";
-	  }
-
-	  try {
-	    return b64DecodeUnicode(output);
-	  } catch (err) {
-	    return atob(output);
-	  }
-	};
-
-/***/ }),
-/* 337 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * The code was extracted from:
-	 * https://github.com/davidchambers/Base64.js
-	 */
-
-	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-	function InvalidCharacterError(message) {
-	  this.message = message;
-	}
-
-	InvalidCharacterError.prototype = new Error();
-	InvalidCharacterError.prototype.name = 'InvalidCharacterError';
-
-	function polyfill(input) {
-	  var str = String(input).replace(/=+$/, '');
-	  if (str.length % 4 == 1) {
-	    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
-	  }
-	  for (
-	  // initialize result and counters
-	  var bc = 0, bs, buffer, idx = 0, output = '';
-	  // get next character
-	  buffer = str.charAt(idx++);
-	  // character found in table? initialize bit storage and add its ascii value;
-	  ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
-	  // and if not first of each 4 characters,
-	  // convert the first 8 bits to one ascii character
-	  bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
-	    // try to find character in table (0-63, not found => -1)
-	    buffer = chars.indexOf(buffer);
-	  }
-	  return output;
-	}
-
-	module.exports = typeof window !== 'undefined' && window.atob && window.atob.bind(window) || polyfill;
 
 /***/ })
 /******/ ]);

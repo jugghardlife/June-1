@@ -3,7 +3,7 @@ import rootReducer from './reducers';
 import thunk from 'redux-thunk';
 
 let account = {
-  currentUser : {}
+  userName:''
 }
 
 let kid = {

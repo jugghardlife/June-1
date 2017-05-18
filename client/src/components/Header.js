@@ -2,9 +2,13 @@ import React from 'react';
 import {Link} from 'react-router';
 import store from '../redux/store';
 import { connect } from 'react-redux';
+import { fetchUser } from '../redux/actions/accountActions';
 import '../css/header.css';
 
 class Header extends React.Component{
+  componentWillMount(){
+    this.props.fetchUser();
+  }
   render(){
     let currentUser = store.getState().account.currentUser;
     return(
@@ -18,7 +22,7 @@ class Header extends React.Component{
           <div className='waha'>
             <Link to='/login' className='login'>Login</Link>
             <Link to='/signup' className='signup'>Signup</Link>
-            { this.props.currentUser.email }
+            { this.props.user }
           </div>
         </div>
         <div className='header_bottom'>
@@ -41,7 +45,7 @@ class Header extends React.Component{
 }
 
 const mapStateToProps = (state) => ({
-  currentUser: state.account.currentUser
+  user:state.account.userName
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps,{fetchUser})(Header);

@@ -11,12 +11,6 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const upload = multer({dest: './public'});
 
-let generateToken = function(user) {
-  return jwt.sign(user,'kid', {
-    expiresIn: 86400
-  });
-}
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -118,6 +112,12 @@ app.get('/dogs/:id',function(req,res){
 
 //user api
 
+let generateToken = function(user) {
+  return jwt.sign(user,'kid', {
+    expiresIn: 86400
+  });
+}
+
 app.post('/signup',function(req,res){
   console.log(req.body)
   let user = new User();
@@ -146,12 +146,22 @@ app.post('/login',function(req,res){
       } else {
         return res.json({
           token: generateToken({_id: user._id, email: user.email}),
-          user:user.email
         });
       }
     });
   });
 })
+
+app.get('/user/:id',function (req, res) {
+  console.log(req.params.id)
+  User.findOne({_id: req.params.id},function (err,user) {
+    if (err) return res.status(500).json({msg: '查找用户失败',err});
+    if (user) {
+      return res.json({msg: '读取用户成功', user:user.email})
+    }
+  })
+})
+
 
 app.listen(4000,function () {
   console.log('running on port 4000...')

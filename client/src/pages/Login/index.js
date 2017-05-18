@@ -13,7 +13,7 @@ class Login extends React.Component{
     }
     console.log(_user)
     this.props.login(_user)
-    browserHistory.push(`/`)
+    // browserHistory.push(`/`)
   }
   render(){
     return(
@@ -36,7 +36,6 @@ class Login extends React.Component{
     )
   }
 }
-
 
 const mapStateToProps = () => ({});
 
