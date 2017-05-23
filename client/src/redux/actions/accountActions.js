@@ -15,6 +15,17 @@ export function login(user){
   }
 }
 
+export function singup(user) {
+  return dispatch => {
+    console.log("user",user)
+    axios.post('http://localhost:4000/signup/',user)
+    .then((res) => {
+      console.log('singup',res)
+      }
+    )
+  }
+}
+
 export function fetchUser() {
   return dispatch => {
     if(sessionStorage.getItem("jwtToken")){

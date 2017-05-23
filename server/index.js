@@ -123,6 +123,8 @@ app.post('/signup',function(req,res){
   let user = new User();
   user.email = req.body.email;
   user.password = req.body.password;
+  user.admin = req.body.admin
+  console.log(user)
   user.save(function(err) {
     if(err) { return console.log(err); }
     return res.json({

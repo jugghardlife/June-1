@@ -13,7 +13,7 @@ class Login extends React.Component{
     }
     console.log(_user)
     this.props.login(_user)
-    // browserHistory.push(`/`)
+    browserHistory.push(`/user`)
   }
   render(){
     return(

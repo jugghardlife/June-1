@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NewKid from './pages/NewKid';
 import NewDog from './pages/NewDog';
+import User from './pages/User';
 import { Router, Route, browserHistory,IndexRoute } from 'react-router';
 
 class Routes extends React.Component{
@@ -20,6 +21,7 @@ class Routes extends React.Component{
             <Route path='/signup' component={Signup} />
             <Route path='/newkid' component={NewKid} />
             <Route path='/newdog' component={NewDog} />
+            <Route path='/user' component={User} />
           </Route>
         </Router>
       </div>
